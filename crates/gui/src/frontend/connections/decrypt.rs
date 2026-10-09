@@ -81,12 +81,12 @@ fn connect_handshake_button(app_data: Rc<AppData>) {
         app_data,
         move |_| {
             let file_chooser_dialog = FileChooserDialog::new(
-                Some("Select capture"),
+                Some("选择握手包文件"),
                 Some(&app_data.decrypt_gui.window),
                 FileChooserAction::Open,
                 &[
-                    ("Cancel", ResponseType::Cancel),
-                    ("Open", ResponseType::Accept),
+                    ("取消", ResponseType::Cancel),
+                    ("打开", ResponseType::Accept),
                 ],
             );
 
@@ -110,9 +110,9 @@ fn connect_handshake_button(app_data: Rc<AppData>) {
                         if crackables.is_empty() {
                             return ErrorDialog::spawn(
                                 &app_data.decrypt_gui.window,
-                                "Invalid capture",
+                                "无效的捕获文件",
                                 &format!(
-                                    "\"{file_path}\" doesn't contain any valid handshake or PMKID"
+                                    "\"{file_path}\" 中不包含任何有效的握手包或 PMKID"
                                 ),
                             );
                         }
@@ -260,12 +260,12 @@ fn connect_wordlist_button(app_data: Rc<AppData>) {
         app_data,
         move |_| {
             let file_chooser_dialog = FileChooserDialog::new(
-                Some("Select wordlist"),
+                Some("选择字典文件"),
                 Some(&app_data.decrypt_gui.window),
                 FileChooserAction::Open,
                 &[
-                    ("Cancel", ResponseType::Cancel),
-                    ("Open", ResponseType::Accept),
+                    ("取消", ResponseType::Cancel),
+                    ("打开", ResponseType::Accept),
                 ],
             );
 
@@ -359,13 +359,13 @@ fn connect_decrypt_button(app_data: Rc<AppData>) {
             let stack = app_data.decrypt_gui.stack.visible_child_name().unwrap();
 
             if !backend::deps::is_installed(backend::deps::AIRCRACK_NG) {
-                let err_msg = "\"aircrack-ng\" is not installed on your system, could not run the decryption";
-                return ErrorDialog::spawn(&app_data.decrypt_gui.window, "Failed to run decryption", err_msg);
+                let err_msg = "系统未安装 \"aircrack-ng\"，无法执行解密";
+                return ErrorDialog::spawn(&app_data.decrypt_gui.window, "解密失败", err_msg);
             }
 
             if stack == "bruteforce" && !backend::deps::is_installed(backend::deps::CRUNCH) {
-                let err_msg = "\"crunch\" is not installed on your system, could not generate a wordlist from a charset";
-                return ErrorDialog::spawn(&app_data.decrypt_gui.window, "Failed to run decryption", err_msg);
+                let err_msg = "系统未安装 \"crunch\"，无法根据字符集生成字典";
+                return ErrorDialog::spawn(&app_data.decrypt_gui.window, "解密失败", err_msg);
             }
 
             if stack == "dictionary" {
@@ -375,7 +375,7 @@ fn connect_decrypt_button(app_data: Rc<AppData>) {
                     &essid,
                     &wordlist_entry
                 ) {
-                    return ErrorDialog::spawn(&app_data.decrypt_gui.window, "Failed to run decryption", &e.to_string());
+                    return ErrorDialog::spawn(&app_data.decrypt_gui.window, "解密失败", &e.to_string());
                 }
             } else if stack == "bruteforce"
                 && let Err(e) = backend::run_decrypt_bruteforce_process(
@@ -387,7 +387,7 @@ fn connect_decrypt_button(app_data: Rc<AppData>) {
                     max,
                 )
             {
-                return ErrorDialog::spawn(&app_data.decrypt_gui.window, "Failed to run decryption", &e.to_string());
+                return ErrorDialog::spawn(&app_data.decrypt_gui.window, "解密失败", &e.to_string());
             }
 
             app_data.decrypt_gui.window.close();

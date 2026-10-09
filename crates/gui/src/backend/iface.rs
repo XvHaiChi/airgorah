@@ -14,7 +14,7 @@ pub fn get_interfaces() -> Result<Vec<String>, AgentError> {
     const NET_PATH: &str = "/sys/class/net";
 
     let entries = std::fs::read_dir(NET_PATH)
-        .map_err(|e| AgentError(format!("could not read '{NET_PATH}': {e}")))?;
+        .map_err(|e| AgentError(format!("无法读取 '{NET_PATH}'：{e}")))?;
 
     let mut ifaces: Vec<String> = entries
         .flatten()
@@ -32,20 +32,20 @@ pub fn is_5ghz_supported(iface: &str) -> Result<bool, AgentError> {
     let phy_path = format!("/sys/class/net/{iface}/phy80211");
 
     let phy_link = std::fs::read_link(&phy_path)
-        .map_err(|e| AgentError(format!("could not read '{phy_path}': {e}")))?;
+        .map_err(|e| AgentError(format!("无法读取 '{phy_path}'：{e}")))?;
 
     let phy_name = phy_link
         .file_name()
         .and_then(|name| name.to_str())
-        .ok_or_else(|| AgentError("could not parse PHY name".to_string()))?;
+        .ok_or_else(|| AgentError("无法解析 PHY 名称".to_string()))?;
 
     let check_band_cmd = Command::new("iw")
         .args(["phy", phy_name, "info"])
         .output()
-        .map_err(|e| AgentError(format!("failed to query PHY '{phy_name}': {e}")))?;
+        .map_err(|e| AgentError(format!("查询 PHY '{phy_name}' 失败：{e}")))?;
 
     if !check_band_cmd.status.success() {
-        return Err(AgentError(format!("PHY '{phy_name}' could not be found")));
+        return Err(AgentError(format!("找不到 PHY '{phy_name}'")));
     }
 
     let output = String::from_utf8_lossy(&check_band_cmd.stdout);

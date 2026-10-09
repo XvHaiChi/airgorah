@@ -10,7 +10,7 @@ mod types;
 fn main() {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
 
-    gtk4::init().expect("Could not initialize gtk4");
+    gtk4::init().expect("无法初始化 gtk4");
 
     Settings::default()
         .unwrap()

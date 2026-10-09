@@ -100,7 +100,7 @@ pub fn send(socket: &OwnedFd, frame: &[u8]) -> io::Result<()> {
 /// Resolve an interface name to its kernel index.
 fn interface_index(iface: &str) -> io::Result<u32> {
     let name = CString::new(iface).map_err(|_| {
-        io::Error::new(io::ErrorKind::InvalidInput, "interface name contains a nul")
+        io::Error::new(io::ErrorKind::InvalidInput, "网卡名称中包含空字符")
     })?;
     // SAFETY: if_nametoindex(3) reads a valid C string; returns 0 on error.
     let index = unsafe { libc::if_nametoindex(name.as_ptr()) };

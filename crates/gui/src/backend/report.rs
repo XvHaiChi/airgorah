@@ -13,10 +13,10 @@ struct Report {
 
 #[derive(thiserror::Error, Debug)]
 pub enum CapError {
-    #[error("Input/Output error: {0}")]
+    #[error("输入/输出错误：{0}")]
     IoError(#[from] std::io::Error),
 
-    #[error("Json error: {0}")]
+    #[error("JSON 错误：{0}")]
     JsonError(#[from] serde_json::Error),
 }
 

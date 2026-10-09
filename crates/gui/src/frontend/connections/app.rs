@@ -55,8 +55,8 @@ fn get_channel_entries(entry: &Entry) -> Vec<i32> {
 /// no scan is running (or the card has not tuned to a channel yet).
 pub fn update_channel_status(app_data: &Rc<AppData>) {
     let text = match backend::get_current_channel() {
-        Some(channel) => format!("Channel: {channel}"),
-        None => String::from("Channel: none"),
+        Some(channel) => format!("信道：{channel}"),
+        None => String::from("信道：无"),
     };
 
     app_data.app_gui.channel_status_bar.pop(0);
@@ -165,7 +165,7 @@ fn connect_window_controller(app_data: Rc<AppData>) {
                 app_data
                     .app_gui
                     .client_status_bar
-                    .push(0, "Showing unassociated clients");
+                    .push(0, "显示未关联的客户端");
 
                 update_buttons_sensitivity(&app_data);
             }
@@ -347,7 +347,7 @@ fn connect_about_button(app_data: Rc<AppData>) {
                 .copyright("Copyright (c) Martin OLIVIER")
                 .license_type(License::MitX11)
                 .logo(&Picture::for_pixbuf(&icon).paintable().unwrap())
-                .comments("A WiFi security auditing software")
+                .comments("一款 WiFi 安全审计软件")
                 .website_label("https://github.com/martin-olivier/airgorah")
                 .transient_for(&app_data.app_gui.window)
                 .modal(true)
@@ -367,7 +367,7 @@ fn connect_update_button(app_data: Rc<AppData>) {
 
             let new_version = match new_version.as_ref() {
                 Some(result) => result.clone(),
-                None => "unknown".to_string(),
+                None => "未知".to_string(),
             };
 
             UpdateDialog::spawn(&app_data.app_gui.window, version, &new_version);
@@ -605,7 +605,7 @@ fn connect_previous_button(app_data: Rc<AppData>) {
             app_data
                 .app_gui
                 .client_status_bar
-                .push(0, &format!("Showing '{essid}' clients"));
+                .push(0, &format!("显示 '{essid}' 的客户端"));
 
             update_buttons_sensitivity(&app_data);
         }
@@ -644,7 +644,7 @@ fn connect_next_button(app_data: Rc<AppData>) {
             app_data
                 .app_gui
                 .client_status_bar
-                .push(0, &format!("Showing '{essid}' clients"));
+                .push(0, &format!("显示 '{essid}' 的客户端"));
 
             update_buttons_sensitivity(&app_data);
         }
@@ -678,7 +678,7 @@ fn connect_top_button(app_data: Rc<AppData>) {
             app_data
                 .app_gui
                 .client_status_bar
-                .push(0, &format!("Showing '{essid}' clients"));
+                .push(0, &format!("显示 '{essid}' 的客户端"));
 
             update_buttons_sensitivity(&app_data);
         }
@@ -718,7 +718,7 @@ fn connect_bottom_button(app_data: Rc<AppData>) {
             app_data
                 .app_gui
                 .client_status_bar
-                .push(0, &format!("Showing '{essid}' clients"));
+                .push(0, &format!("显示 '{essid}' 的客户端"));
 
             update_buttons_sensitivity(&app_data);
         }
@@ -733,7 +733,13 @@ fn notify_capture(app: &Application, essid: &str, bssid: &str, kind: &str) {
         false => format!("{essid} ({bssid})"),
     };
 
-    let notification = gio::Notification::new(&format!("{kind} captured"));
+    // The notification id stays ASCII; only the displayed title is localized.
+    let kind_label = match kind {
+        "Handshake" => "握手包",
+        _ => "PMKID",
+    };
+
+    let notification = gio::Notification::new(&format!("{kind_label}已捕获"));
     notification.set_body(Some(&network));
     notification.set_icon(&icon);
 
@@ -1066,7 +1072,7 @@ fn connect_pmkid_button(app_data: Rc<AppData>) {
                     if let Err(e) = backend::launch_pmkid_attack(ap) {
                         ErrorDialog::spawn(
                             &app_data.app_gui.window,
-                            "Failed to start PMKID attack",
+                            "启动 PMKID 攻击失败",
                             &e.to_string(),
                         );
                     }
@@ -1109,12 +1115,12 @@ fn connect_capture_button(app_data: Rc<AppData>) {
             }
 
             let file_chooser_dialog = FileChooserDialog::new(
-                Some("Save capture"),
+                Some("保存捕获数据"),
                 Some(&app_data.app_gui.window),
                 FileChooserAction::Save,
                 &[
-                    ("Cancel", ResponseType::Cancel),
-                    ("Save", ResponseType::Accept),
+                    ("取消", ResponseType::Cancel),
+                    ("保存", ResponseType::Accept),
                 ],
             );
 
@@ -1135,7 +1141,7 @@ fn connect_capture_button(app_data: Rc<AppData>) {
                         if let Err(e) = backend::save_capture(&path) {
                             return ErrorDialog::spawn(
                                 &app_data.app_gui.window,
-                                "Save failed",
+                                "保存失败",
                                 &e.to_string(),
                             );
                         }

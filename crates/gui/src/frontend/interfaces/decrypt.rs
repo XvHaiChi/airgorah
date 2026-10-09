@@ -33,7 +33,7 @@ pub struct DecryptSettingsGui {
 impl DecryptSettingsGui {
     pub fn new(parent: &impl IsA<Window>) -> Self {
         let window = Window::builder()
-            .title("Bruteforce advanced settings")
+            .title("暴力破解高级设置")
             .hide_on_close(true)
             .default_width(360)
             .default_height(160)
@@ -43,17 +43,17 @@ impl DecryptSettingsGui {
             .build();
 
         let charset = Entry::builder()
-            .placeholder_text("ex: 123456789AB#*")
+            .placeholder_text("例：123456789AB#*")
             .margin_start(4)
             .margin_end(4)
             .margin_bottom(4)
             .build();
 
-        let charset_frame = Frame::new(Some("Custom charset"));
+        let charset_frame = Frame::new(Some("自定义字符集"));
         charset_frame.set_child(Some(&charset));
 
-        let min_label = Label::new(Some("minimum"));
-        let max_label = Label::new(Some("maximum"));
+        let min_label = Label::new(Some("最小"));
+        let max_label = Label::new(Some("最大"));
 
         let min_adjustment = Adjustment::new(8.0, 8.0, 64.0, 1.0, 10.0, 0.0);
         let max_adjustment = Adjustment::new(10.0, 8.0, 64.0, 1.0, 10.0, 0.0);
@@ -61,7 +61,7 @@ impl DecryptSettingsGui {
         let min_but = SpinButton::new(Some(&min_adjustment), 1.0, 0);
         let max_but = SpinButton::new(Some(&max_adjustment), 1.0, 0);
 
-        let password_lenght_frame = Frame::new(Some("Password lenght"));
+        let password_lenght_frame = Frame::new(Some("密码长度"));
 
         let password_lenght_box = Box::new(Orientation::Horizontal, 4);
         password_lenght_box.set_margin_start(4);
@@ -119,7 +119,7 @@ pub struct DecryptGui {
 impl DecryptGui {
     pub fn new(parent: &impl IsA<Window>) -> Self {
         let window = Window::builder()
-            .title("WPA Decryption")
+            .title("WPA 解密")
             .hide_on_close(true)
             .default_width(440)
             .default_height(200)
@@ -131,14 +131,14 @@ impl DecryptGui {
         //
 
         let wordlist_entry = Entry::builder()
-            .placeholder_text("ex: rockyou.txt")
+            .placeholder_text("例：rockyou.txt")
             .hexpand(true)
             .editable(false)
             .build();
 
         let wordlist_but = Button::from_icon_name("edit-find-symbolic");
 
-        let wordlist_frame = Frame::new(Some("Wordlist"));
+        let wordlist_frame = Frame::new(Some("字典文件"));
 
         let wordlist_box = Box::new(Orientation::Horizontal, 4);
         wordlist_box.set_margin_start(4);
@@ -151,15 +151,15 @@ impl DecryptGui {
 
         //
 
-        let lowercase_but = CheckButton::with_label("Lowercase");
-        let uppercase_but = CheckButton::with_label("Uppercase");
-        let numbers_but = CheckButton::with_label("Numbers");
-        let symbols_but = CheckButton::with_label("Symbols");
+        let lowercase_but = CheckButton::with_label("小写字母");
+        let uppercase_but = CheckButton::with_label("大写字母");
+        let numbers_but = CheckButton::with_label("数字");
+        let symbols_but = CheckButton::with_label("符号");
         let settings_but = Button::from_icon_name("emblem-system-symbolic");
 
         //
 
-        let bruteforce_frame = Frame::new(Some("Charset"));
+        let bruteforce_frame = Frame::new(Some("字符集"));
 
         let bruteforce_box = Box::new(Orientation::Horizontal, 4);
         bruteforce_box.set_margin_start(4);
@@ -177,8 +177,8 @@ impl DecryptGui {
 
         let stack = Stack::new();
 
-        stack.add_titled(&wordlist_frame, Some("dictionary"), "Dictionary");
-        stack.add_titled(&bruteforce_frame, Some("bruteforce"), "Bruteforce");
+        stack.add_titled(&wordlist_frame, Some("dictionary"), "字典");
+        stack.add_titled(&bruteforce_frame, Some("bruteforce"), "暴力破解");
 
         let stack_switcher = StackSwitcher::new();
         stack_switcher.set_stack(Some(&stack));
@@ -186,14 +186,14 @@ impl DecryptGui {
         //
 
         let handshake_entry = Entry::builder()
-            .placeholder_text("ex: handshake.cap")
+            .placeholder_text("例：handshake.cap")
             .hexpand(true)
             .editable(false)
             .build();
 
         let handshake_but = Button::from_icon_name("edit-find-symbolic");
 
-        let handshake_frame = Frame::new(Some("Capture"));
+        let handshake_frame = Frame::new(Some("握手包"));
 
         let handshake_box = Box::new(Orientation::Horizontal, 4);
         handshake_box.set_margin_start(4);
@@ -209,7 +209,7 @@ impl DecryptGui {
         let target_model = build_ap_model();
         let target_view = build_ap_view(&target_model);
 
-        let target_frame = Frame::new(Some("Target"));
+        let target_frame = Frame::new(Some("目标"));
 
         let target_box = Box::new(Orientation::Horizontal, 4);
         target_box.set_margin_start(4);
@@ -221,7 +221,7 @@ impl DecryptGui {
 
         //
 
-        let decrypt_but = Button::with_label("Start Decryption");
+        let decrypt_but = Button::with_label("开始解密");
         decrypt_but.set_sensitive(false);
 
         let vbox = Box::new(Orientation::Vertical, 10);
@@ -281,8 +281,8 @@ impl DecryptGui {
             if crackables.is_empty() {
                 return ErrorDialog::spawn(
                     &self.window,
-                    "Invalid capture",
-                    &format!("\"{path}\" doesn't contain any valid handshake or PMKID"),
+                    "无效的捕获文件",
+                    &format!("\"{path}\" 中不包含任何有效的握手包或 PMKID"),
                 );
             }
 

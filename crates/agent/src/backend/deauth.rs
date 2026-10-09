@@ -28,10 +28,10 @@ const REASON_DISASSOC: u16 = 8;
 
 #[derive(thiserror::Error, Debug)]
 pub enum DeathError {
-    #[error("Input/Output error: {0}")]
+    #[error("输入/输出错误：{0}")]
     IoError(#[from] std::io::Error),
 
-    #[error("Invalid MAC address: {0}")]
+    #[error("无效的 MAC 地址：{0}")]
     InvalidMac(String),
 }
 

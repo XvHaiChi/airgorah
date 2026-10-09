@@ -12,10 +12,10 @@ use airgorah_common::types::*;
 
 #[derive(thiserror::Error, Debug)]
 pub enum ScanError {
-    #[error("Could not setup scan process: no band selected")]
+    #[error("无法启动扫描进程：未选择频段")]
     NoBandSelected,
 
-    #[error("Input/Output error: {0}")]
+    #[error("输入/输出错误：{0}")]
     IoError(#[from] std::io::Error),
 }
 

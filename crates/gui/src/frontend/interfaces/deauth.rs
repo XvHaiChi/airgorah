@@ -18,7 +18,7 @@ pub struct DeauthGui {
 impl DeauthGui {
     pub fn new(parent: &impl IsA<Window>) -> Self {
         let window = Window::builder()
-            .title("Deauth")
+            .title("去认证")
             .hide_on_close(true)
             .default_width(300)
             .default_height(500)
@@ -28,7 +28,7 @@ impl DeauthGui {
             .build();
 
         // Injection rate: send rounds per second.
-        let rate_label = Label::new(Some("Rate (pkt/s)"));
+        let rate_label = Label::new(Some("速率（包/秒）"));
         rate_label.set_halign(Align::Start);
         rate_label.set_hexpand(true);
 
@@ -40,7 +40,7 @@ impl DeauthGui {
         rate_box.append(&rate_but);
 
         // Optionally send a disassociation frame alongside each deauth.
-        let disassoc_but = CheckButton::with_label("Send disassociation frames");
+        let disassoc_but = CheckButton::with_label("同时发送解除关联帧");
 
         let settings_box = Box::new(Orientation::Vertical, 10);
         settings_box.append(&rate_box);
@@ -54,8 +54,8 @@ impl DeauthGui {
         let settings_frame = Frame::new(None);
         settings_frame.set_child(Some(&settings_box));
 
-        let all_cli_but = CheckButton::with_label("Deauth all clients");
-        let sel_cli_but = CheckButton::with_label("Deauth selected clients");
+        let all_cli_but = CheckButton::with_label("去认证所有客户端");
+        let sel_cli_but = CheckButton::with_label("去认证所选客户端");
 
         all_cli_but.set_active(true);
         sel_cli_but.set_group(Some(&all_cli_but));
@@ -69,7 +69,7 @@ impl DeauthGui {
         let store = ListStore::new(&[glib::Type::BOOL, glib::Type::STRING]);
 
         let column = TreeViewColumn::new();
-        column.set_title("Clients");
+        column.set_title("客户端");
 
         let view = TreeView::new();
         view.set_sensitive(false);
@@ -97,7 +97,7 @@ impl DeauthGui {
         let deauth_frame = Frame::new(None);
         deauth_frame.set_child(Some(&deauth_box));
 
-        let attack_but = Button::with_label("Deauth");
+        let attack_but = Button::with_label("去认证");
 
         let main_box = Box::new(Orientation::Vertical, 10);
         main_box.append(&settings_frame);
@@ -126,7 +126,7 @@ impl DeauthGui {
 
     pub fn show(&self, ap: AP) {
         self.window
-            .set_title(Some(&format!("Deauth \"{}\"", ap.essid)));
+            .set_title(Some(&format!("去认证 \"{}\"", ap.essid)));
 
         self.sel_cli_but.set_active(false);
         self.all_cli_but.set_active(true);

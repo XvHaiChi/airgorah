@@ -31,7 +31,7 @@ pub struct InterfaceGui {
 impl InterfaceGui {
     pub fn new(parent: &impl IsA<Window>) -> Self {
         let window = Window::builder()
-            .title("Select a wireless interface")
+            .title("选择无线网卡")
             .hide_on_close(true)
             .default_width(300)
             .default_height(70)
@@ -45,7 +45,7 @@ impl InterfaceGui {
 
         let refresh_but = Button::builder().icon_name("view-refresh-symbolic").build();
 
-        let select_but = Button::with_label("Select");
+        let select_but = Button::with_label("选择");
 
         let hbox = Box::new(Orientation::Horizontal, 10);
         let vbox = Box::new(Orientation::Vertical, 10);

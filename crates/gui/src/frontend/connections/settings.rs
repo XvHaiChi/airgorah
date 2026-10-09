@@ -113,7 +113,7 @@ pub fn connect(app_data: Rc<AppData>) {
         app_data
             .settings_gui
             .kill_network_manager
-            .set_tooltip_text(Some("'systemd' is required to enable this option"));
+            .set_tooltip_text(Some("启用此选项需要 'systemd'"));
     }
 
     connect_controller(app_data.clone());

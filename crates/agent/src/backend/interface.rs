@@ -5,25 +5,25 @@ use std::process::Command;
 
 #[derive(thiserror::Error, Debug)]
 pub enum IfaceError {
-    #[error("Input/Output error: {0}")]
+    #[error("输入/输出错误：{0}")]
     IoError(#[from] std::io::Error),
 
-    #[error("Utf8 conversion error")]
+    #[error("UTF-8 转换错误")]
     Utf8Error(#[from] std::string::FromUtf8Error),
 
-    #[error("Interface '{0}' could not be found")]
+    #[error("找不到网卡 '{0}'")]
     IfaceNotFound(String),
 
-    #[error("Could not change MAC address: interface not in monitor mode")]
+    #[error("无法修改 MAC 地址：网卡未处于监听模式")]
     IfaceNotMonitor,
 
-    #[error("MAC address is invalid: change its value in the settings page.")]
+    #[error("MAC 地址无效：请在设置页面中修改。")]
     InvalidMac,
 
-    #[error("Could not enable monitor mode on '{0}'")]
+    #[error("无法在 '{0}' 上启用监听模式")]
     MonitorFailed(String),
 
-    #[error("Could not disable monitor mode on '{0}'")]
+    #[error("无法在 '{0}' 上禁用监听模式")]
     ManagedFailed(String),
 }
 

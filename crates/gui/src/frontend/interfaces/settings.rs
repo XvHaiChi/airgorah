@@ -17,7 +17,7 @@ pub struct SettingsGui {
 impl SettingsGui {
     pub fn new(parent: &impl IsA<Window>) -> Self {
         let window = Window::builder()
-            .title("Settings")
+            .title("设置")
             .hide_on_close(true)
             .default_width(250)
             .default_height(200)
@@ -26,11 +26,11 @@ impl SettingsGui {
             .modal(true)
             .build();
 
-        let random_mac = CheckButton::with_label("Random MAC address");
-        let default_mac = CheckButton::with_label("Default MAC address");
-        let specific_mac = CheckButton::with_label("Specific MAC address");
+        let random_mac = CheckButton::with_label("随机 MAC 地址");
+        let default_mac = CheckButton::with_label("默认 MAC 地址");
+        let specific_mac = CheckButton::with_label("指定 MAC 地址");
         let mac_entry = Entry::builder()
-            .placeholder_text("ex: 00:00:01:02:03:04")
+            .placeholder_text("例：00:00:01:02:03:04")
             .hexpand(true)
             .editable(true)
             .sensitive(false)
@@ -52,19 +52,19 @@ impl SettingsGui {
         let mac_frame = Frame::new(Some("MAC"));
         mac_frame.set_child(Some(&mac_box));
 
-        let display_hidden_ap = CheckButton::with_label("Display hidden APs");
+        let display_hidden_ap = CheckButton::with_label("显示隐藏的接入点");
         display_hidden_ap.set_active(true);
 
-        let display_frame = Frame::new(Some("Display"));
+        let display_frame = Frame::new(Some("显示"));
         display_frame.set_child(Some(&display_hidden_ap));
 
-        let kill_network_manager = CheckButton::with_label("Kill network managers");
+        let kill_network_manager = CheckButton::with_label("关闭网络管理服务");
         kill_network_manager.set_active(true);
 
-        let process_frame = Frame::new(Some("Process"));
+        let process_frame = Frame::new(Some("进程"));
         process_frame.set_child(Some(&kill_network_manager));
 
-        let save_but = Button::with_label("Save");
+        let save_but = Button::with_label("保存");
 
         let vbox = Box::new(Orientation::Vertical, 10);
         vbox.set_margin_top(10);

@@ -27,7 +27,7 @@ pub fn find_vendor(mac: &str) -> String {
     }
 
     let mut prefix = mac.get(..13).unwrap_or(mac).to_string();
-    let mut vendor = String::from("Unknown");
+    let mut vendor = String::from("未知");
 
     while !prefix.is_empty() {
         if let Some(item) = VENDORS.get(prefix.as_str()) {

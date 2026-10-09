@@ -6,35 +6,35 @@ use gtk4::*;
 fn build_about_button() -> Button {
     Button::builder()
         .icon_name("help-about-symbolic")
-        .tooltip_text("About")
+        .tooltip_text("关于")
         .build()
 }
 
 fn build_update_button() -> Button {
     Button::builder()
         .icon_name("folder-download-symbolic")
-        .tooltip_text("Update available")
+        .tooltip_text("有可用更新")
         .build()
 }
 
 fn build_decrypt_button() -> Button {
     Button::builder()
         .icon_name("utilities-terminal-symbolic")
-        .tooltip_text("WPA decryption")
+        .tooltip_text("WPA 解密")
         .build()
 }
 
 fn build_settings_button() -> Button {
     Button::builder()
         .icon_name("emblem-system-symbolic")
-        .tooltip_text("Settings")
+        .tooltip_text("设置")
         .build()
 }
 
 fn build_pmkid_button() -> Button {
     Button::builder()
         .icon_name("network-wireless-hotspot-symbolic")
-        .tooltip_text("Solicit a PMKID from the selected access point (clientless)")
+        .tooltip_text("向所选接入点索取 PMKID（无需客户端）")
         .sensitive(false)
         .build()
 }
@@ -42,14 +42,14 @@ fn build_pmkid_button() -> Button {
 fn build_scan_button() -> Button {
     Button::builder()
         .icon_name("media-playback-start-symbolic")
-        .tooltip_text("Start / Pause the scan")
+        .tooltip_text("开始 / 暂停扫描")
         .build()
 }
 
 fn build_restart_button() -> Button {
     Button::builder()
         .icon_name("view-refresh-symbolic")
-        .tooltip_text("Clear results and restart the scan")
+        .tooltip_text("清空结果并重新扫描")
         .sensitive(false)
         .build()
 }
@@ -57,7 +57,7 @@ fn build_restart_button() -> Button {
 fn build_export_button() -> Button {
     Button::builder()
         .icon_name("media-floppy-symbolic")
-        .tooltip_text("Save captured packets as .cap file")
+        .tooltip_text("将捕获的数据包保存为 .cap 文件")
         .sensitive(false)
         .build()
 }
@@ -65,7 +65,7 @@ fn build_export_button() -> Button {
 fn build_report_button() -> Button {
     Button::builder()
         .icon_name("edit-paste-symbolic")
-        .tooltip_text("Save captured data as .json file")
+        .tooltip_text("将捕获的数据保存为 .json 文件")
         .sensitive(false)
         .build()
 }
@@ -73,7 +73,7 @@ fn build_report_button() -> Button {
 fn build_hopping_button() -> Button {
     Button::builder()
         .icon_name("edit-select-all-symbolic")
-        .tooltip_text("Hop on all channels of the selected bands")
+        .tooltip_text("在所选频段的所有信道上跳频")
         .sensitive(false)
         .build()
 }
@@ -81,7 +81,7 @@ fn build_hopping_button() -> Button {
 fn build_focus_button() -> Button {
     Button::builder()
         .icon_name("edit-select-symbolic")
-        .tooltip_text("Focus the channel of the selected access point")
+        .tooltip_text("锁定到所选接入点的信道")
         .sensitive(false)
         .build()
 }
@@ -89,7 +89,7 @@ fn build_focus_button() -> Button {
 fn build_add_button() -> Button {
     Button::builder()
         .icon_name("list-add-symbolic")
-        .tooltip_text("Add the channel of the selected access point to the channel hop list")
+        .tooltip_text("将所选接入点的信道加入跳频列表")
         .sensitive(false)
         .build()
 }
@@ -97,7 +97,7 @@ fn build_add_button() -> Button {
 fn build_previous_but() -> Button {
     Button::builder()
         .icon_name("go-up-symbolic")
-        .tooltip_text("Previous access point")
+        .tooltip_text("上一个接入点")
         .sensitive(false)
         .build()
 }
@@ -105,7 +105,7 @@ fn build_previous_but() -> Button {
 fn build_next_but() -> Button {
     Button::builder()
         .icon_name("go-down-symbolic")
-        .tooltip_text("Next access point")
+        .tooltip_text("下一个接入点")
         .sensitive(false)
         .build()
 }
@@ -113,7 +113,7 @@ fn build_next_but() -> Button {
 fn build_top_but() -> Button {
     Button::builder()
         .icon_name("go-top-symbolic")
-        .tooltip_text("First access point")
+        .tooltip_text("第一个接入点")
         .sensitive(false)
         .build()
 }
@@ -121,7 +121,7 @@ fn build_top_but() -> Button {
 fn build_bottom_but() -> Button {
     Button::builder()
         .icon_name("go-bottom-symbolic")
-        .tooltip_text("Last access point")
+        .tooltip_text("最后一个接入点")
         .sensitive(false)
         .build()
 }
@@ -129,7 +129,7 @@ fn build_bottom_but() -> Button {
 fn build_deauth_button() -> Button {
     Button::builder()
         .icon_name("network-wireless-offline-symbolic")
-        .tooltip_text("Perform (or stop) a deauth attack on the selected access point")
+        .tooltip_text("对所选接入点发起（或停止）去认证攻击")
         .sensitive(false)
         .build()
 }
@@ -137,7 +137,7 @@ fn build_deauth_button() -> Button {
 fn build_capture_button() -> Button {
     Button::builder()
         .icon_name("dialog-password-symbolic")
-        .tooltip_text("Decrypt a handshake or PMKID captured on the selected access point")
+        .tooltip_text("解密在所选接入点上捕获的握手包或 PMKID")
         .sensitive(false)
         .build()
 }
@@ -181,14 +181,14 @@ fn build_aps_view() -> TreeView {
     let columns = [
         ("ESSID", 154),
         ("BSSID", 138),
-        ("Band", 64),
-        ("Channel", 86),
-        ("Power", 72),
-        ("Encryption", 106),
-        ("Clients", 80),
-        ("First time seen", 150),
-        ("Last time seen", 150),
-        ("Handshake", 106),
+        ("频段", 64),
+        ("信道", 86),
+        ("信号强度", 72),
+        ("加密方式", 106),
+        ("客户端", 80),
+        ("首次发现", 150),
+        ("最近发现", 150),
+        ("握手包", 106),
         ("PMKID", 80),
     ];
 
@@ -244,9 +244,9 @@ fn build_aps_scroll() -> ScrolledWindow {
 }
 
 fn build_aps_menu() -> PopoverMenu {
-    let copy_bssid_item = gio::MenuItem::new(Some("Copy BSSID"), Some("app.copy_bssid"));
-    let copy_essid_item = gio::MenuItem::new(Some("Copy ESSID"), Some("app.copy_essid"));
-    let copy_channel_item = gio::MenuItem::new(Some("Copy Channel"), Some("app.copy_channel"));
+    let copy_bssid_item = gio::MenuItem::new(Some("复制 BSSID"), Some("app.copy_bssid"));
+    let copy_essid_item = gio::MenuItem::new(Some("复制 ESSID"), Some("app.copy_essid"));
+    let copy_channel_item = gio::MenuItem::new(Some("复制信道"), Some("app.copy_channel"));
 
     let submenu = gio::Menu::new();
 
@@ -273,13 +273,13 @@ fn build_cli_model() -> ListStore {
 fn build_cli_view() -> TreeView {
     let view = TreeView::builder().vexpand(true).hexpand(true).build();
     let columns = [
-        ("Station MAC", 200),
-        ("Packets", 110),
-        ("Power", 100),
-        ("First time seen", 160),
-        ("Last time seen", 160),
-        ("Vendor", 200),
-        ("Probes", 300),
+        ("客户端 MAC", 200),
+        ("数据包", 110),
+        ("信号强度", 100),
+        ("首次发现", 160),
+        ("最近发现", 160),
+        ("厂商", 200),
+        ("探测请求", 300),
     ];
 
     for (pos, (column_name, column_size)) in columns.into_iter().enumerate() {
@@ -321,9 +321,9 @@ fn build_cli_scroll() -> ScrolledWindow {
 }
 
 fn build_cli_menu() -> PopoverMenu {
-    let copy_mac_item = gio::MenuItem::new(Some("Copy MAC"), Some("app.copy_mac"));
-    let copy_vendor_item = gio::MenuItem::new(Some("Copy Vendor"), Some("app.copy_vendor"));
-    let copy_probes_item = gio::MenuItem::new(Some("Copy Probes"), Some("app.copy_probes"));
+    let copy_mac_item = gio::MenuItem::new(Some("复制 MAC"), Some("app.copy_mac"));
+    let copy_vendor_item = gio::MenuItem::new(Some("复制厂商"), Some("app.copy_vendor"));
+    let copy_probes_item = gio::MenuItem::new(Some("复制探测请求"), Some("app.copy_probes"));
 
     let submenu = gio::Menu::new();
 
@@ -420,7 +420,7 @@ impl AppGui {
         // Channel
 
         let channel_filter_entry = Entry::builder()
-            .placeholder_text("Channel (ex: 1,6,11)")
+            .placeholder_text("信道（例：1,6,11）")
             .hexpand(true)
             .sensitive(false)
             .build();
@@ -505,16 +505,16 @@ impl AppGui {
         panned_cli_aps.set_end_child(Some(&cli_scroll));
 
         let client_status_bar = Statusbar::new();
-        client_status_bar.push(0, "Showing unassociated clients");
+        client_status_bar.push(0, "显示未关联的客户端");
 
         let channel_status_bar = Statusbar::new();
         channel_status_bar
-            .set_tooltip_text(Some("Channel the interface is currently listening on"));
-        channel_status_bar.push(0, "Channel: none");
+            .set_tooltip_text(Some("网卡当前监听的信道"));
+        channel_status_bar.push(0, "信道：无");
 
         let iface_status_bar = Statusbar::new();
-        iface_status_bar.set_tooltip_text(Some("Wireless interface used for scans and attacks"));
-        iface_status_bar.push(0, "Interface: none");
+        iface_status_bar.set_tooltip_text(Some("用于扫描和攻击的无线网卡"));
+        iface_status_bar.push(0, "网卡：无");
 
         let status_bar = Box::new(Orientation::Horizontal, 0);
         status_bar.append(&client_status_bar);

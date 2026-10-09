@@ -127,7 +127,7 @@ pub fn write_msg<W: Write, T: Serialize>(w: &mut W, msg: &T) -> io::Result<()> {
     if data.len() > MAX_MSG_LEN {
         return Err(io::Error::new(
             io::ErrorKind::InvalidData,
-            "message exceeds maximum frame length",
+            "消息超出最大帧长度",
         ));
     }
 
@@ -146,7 +146,7 @@ pub fn read_msg<R: Read, T: DeserializeOwned>(r: &mut R) -> io::Result<T> {
     if len > MAX_MSG_LEN {
         return Err(io::Error::new(
             io::ErrorKind::InvalidData,
-            "declared frame length exceeds maximum",
+            "声明的帧长度超出上限",
         ));
     }
 

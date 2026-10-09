@@ -129,7 +129,7 @@ fn connect_attack_but(app_data: Rc<AppData>) {
             ) {
                 return ErrorDialog::spawn(
                     &app_data.deauth_gui.window,
-                    "Deauth attack failed",
+                    "去认证攻击失败",
                     e.to_string().as_str(),
                 );
             };

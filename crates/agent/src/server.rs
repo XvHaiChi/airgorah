@@ -81,7 +81,7 @@ fn dispatch(request: Request) -> (Response, bool) {
             if version != VERSION {
                 return (
                     err(format!(
-                        "protocol version mismatch: agent={VERSION}, gui={version}"
+                        "协议版本不匹配：agent={VERSION}, gui={version}"
                     )),
                     false,
                 );
@@ -102,7 +102,7 @@ fn dispatch(request: Request) -> (Response, bool) {
             kill_network_manager,
         } => {
             if !is_valid_interface_name(&iface) {
-                return (err("invalid interface name"), false);
+                return (err("无效的网卡名称"), false);
             }
             match backend::enable_monitor_mode(&iface, kill_network_manager) {
                 Ok(()) => {
@@ -115,12 +115,12 @@ fn dispatch(request: Request) -> (Response, bool) {
 
         Request::SetMac { iface, mac } => {
             if !is_valid_interface_name(&iface) {
-                return (err("invalid interface name"), false);
+                return (err("无效的网卡名称"), false);
             }
             if let MacMode::Specific(ref mac) = mac
                 && !is_valid_mac(mac)
             {
-                return (err("invalid MAC address"), false);
+                return (err("无效的 MAC 地址"), false);
             }
             match backend::set_mac_address(&iface, &mac) {
                 Ok(()) => (Response::Ok, false),
@@ -130,7 +130,7 @@ fn dispatch(request: Request) -> (Response, bool) {
 
         Request::DisableMonitor { iface } => {
             if !is_valid_interface_name(&iface) {
-                return (err("invalid interface name"), false);
+                return (err("无效的网卡名称"), false);
             }
             let result = backend::disable_monitor_mode(&iface);
             backend::clear_iface();
@@ -147,12 +147,12 @@ fn dispatch(request: Request) -> (Response, bool) {
             channels,
         } => {
             if !is_valid_interface_name(&iface) {
-                return (err("invalid interface name"), false);
+                return (err("无效的网卡名称"), false);
             }
             if let Some(ref filter) = channels
                 && !is_valid_channel_filter(filter, ghz_2_4, ghz_5)
             {
-                return (err("invalid channel filter"), false);
+                return (err("无效的信道过滤"), false);
             }
             match backend::set_scan_process(&iface, ghz_2_4, ghz_5, channels) {
                 Ok(()) => (Response::Ok, false),
@@ -197,18 +197,18 @@ fn dispatch(request: Request) -> (Response, bool) {
             if let Some(ref clients) = clients
                 && !clients.iter().all(|c| is_valid_mac(c))
             {
-                return (err("invalid client MAC address"), false);
+                return (err("无效的客户端 MAC 地址"), false);
             }
             let iface = match backend::get_iface() {
                 Some(iface) => iface,
-                None => return (err("no interface selected"), false),
+                None => return (err("未选择网卡"), false),
             };
             let ap = match backend::get_aps().get(&bssid).cloned() {
                 Some(ap) => ap,
-                None => return (err(format!("unknown access point {bssid}")), false),
+                None => return (err(format!("未知的接入点 {bssid}")), false),
             };
             if !is_valid_mac(&ap.bssid) {
-                return (err("invalid access point BSSID"), false);
+                return (err("无效的接入点 BSSID"), false);
             }
             match backend::launch_deauth_attack(&iface, ap, clients, rate, disassoc) {
                 Ok(()) => (Response::Ok, false),
@@ -229,14 +229,14 @@ fn dispatch(request: Request) -> (Response, bool) {
         Request::StartPmkid { bssid } => {
             let iface = match backend::get_iface() {
                 Some(iface) => iface,
-                None => return (err("no interface selected"), false),
+                None => return (err("未选择网卡"), false),
             };
             let ap = match backend::get_aps().get(&bssid).cloned() {
                 Some(ap) => ap,
-                None => return (err(format!("unknown access point {bssid}")), false),
+                None => return (err(format!("未知的接入点 {bssid}")), false),
             };
             if !is_valid_mac(&ap.bssid) {
-                return (err("invalid access point BSSID"), false);
+                return (err("无效的接入点 BSSID"), false);
             }
             match backend::launch_pmkid_attack(&iface, ap) {
                 Ok(()) => (Response::Ok, false),

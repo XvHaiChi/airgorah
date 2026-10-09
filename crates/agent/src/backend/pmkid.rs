@@ -45,13 +45,13 @@ const FALLBACK_SOURCE: [u8; 6] = [0x02, 0x00, 0x00, 0x00, 0x00, 0x01];
 
 #[derive(thiserror::Error, Debug)]
 pub enum PmkidError {
-    #[error("Input/Output error: {0}")]
+    #[error("输入/输出错误：{0}")]
     IoError(#[from] std::io::Error),
 
-    #[error("Invalid MAC address: {0}")]
+    #[error("无效的 MAC 地址：{0}")]
     InvalidMac(String),
 
-    #[error("This access point is already under attack")]
+    #[error("该接入点已处于攻击中")]
     AlreadyAttacked,
 }
 

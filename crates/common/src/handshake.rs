@@ -81,7 +81,7 @@ where
             let essid = essids
                 .get(&bssid)
                 .cloned()
-                .unwrap_or_else(|| "hidden".to_string());
+                .unwrap_or_else(|| "隐藏网络".to_string());
             let handshake = handshakes.contains(&bssid);
             let pmkid = pmkids.contains(&bssid);
             Crackable {

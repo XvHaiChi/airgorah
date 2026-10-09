@@ -37,7 +37,7 @@ fn run_scan(app_data: &AppData) {
     };
 
     if let Err(e) = backend::set_scan_process(&iface, ghz_2_4, ghz_5, channel_filter) {
-        return ErrorDialog::spawn(&app_data.app_gui.window, "Error", e.to_string().as_str());
+        return ErrorDialog::spawn(&app_data.app_gui.window, "错误", e.to_string().as_str());
     }
 
     app_data
@@ -94,12 +94,12 @@ fn connect_export_button(app_data: Rc<AppData>) {
             }
 
             let file_chooser_dialog = FileChooserDialog::new(
-                Some("Save capture"),
+                Some("保存捕获数据"),
                 Some(&app_data.app_gui.window),
                 FileChooserAction::Save,
                 &[
-                    ("Cancel", ResponseType::Cancel),
-                    ("Save", ResponseType::Accept),
+                    ("取消", ResponseType::Cancel),
+                    ("保存", ResponseType::Accept),
                 ],
             );
 
@@ -126,7 +126,7 @@ fn connect_export_button(app_data: Rc<AppData>) {
                             }
                             return ErrorDialog::spawn(
                                 &app_data.app_gui.window,
-                                "Save failed",
+                                "保存失败",
                                 &e.to_string(),
                             );
                         }
@@ -153,12 +153,12 @@ fn connect_report_button(app_data: Rc<AppData>) {
             }
 
             let file_chooser_dialog = Rc::new(FileChooserDialog::new(
-                Some("Save report"),
+                Some("保存报告"),
                 Some(&app_data.app_gui.window),
                 FileChooserAction::Save,
                 &[
-                    ("Cancel", ResponseType::Cancel),
-                    ("Save", ResponseType::Accept),
+                    ("取消", ResponseType::Cancel),
+                    ("保存", ResponseType::Accept),
                 ],
             ));
 
@@ -183,7 +183,7 @@ fn connect_report_button(app_data: Rc<AppData>) {
                         if let Err(e) = backend::save_report(&path) {
                             return ErrorDialog::spawn(
                                 &app_data.app_gui.window,
-                                "Save failed",
+                                "保存失败",
                                 &e.to_string(),
                             );
                         }
@@ -236,8 +236,8 @@ pub fn connect_ghz_5_button(app_data: Rc<AppData>) {
             if !backend::is_5ghz_supported(&iface).unwrap_or(false) && this.is_active() {
                 ErrorDialog::spawn(
                     &app_data.app_gui.window,
-                    "Error",
-                    "Your network card doesn't support 5 GHz",
+                    "错误",
+                    "你的无线网卡不支持 5 GHz",
                 );
                 return this.set_active(false);
             }
@@ -325,7 +325,7 @@ fn connect_cursor_changed(app_data: Rc<AppData>) {
                 app_data
                     .app_gui
                     .client_status_bar
-                    .push(0, &format!("Showing '{essid}' clients"));
+                    .push(0, &format!("显示 '{essid}' 的客户端"));
 
                 let mut clients = match aps.get(&bssid) {
                     Some(ap) => ap.clients.keys().clone(),
@@ -350,7 +350,7 @@ fn connect_cursor_changed(app_data: Rc<AppData>) {
                 app_data
                     .app_gui
                     .client_status_bar
-                    .push(0, "Showing unassociated clients");
+                    .push(0, "显示未关联的客户端");
             }
             app_data.app_gui.cli_model.clear();
         }

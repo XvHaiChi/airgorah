@@ -37,7 +37,7 @@ fn connect_interface_refresh(app_data: Rc<AppData>) {
                 Err(e) => {
                     return ErrorDialog::spawn(
                         &app_data.interface_gui.window,
-                        "Failed to get interfaces",
+                        "获取网卡列表失败",
                         &e.to_string(),
                     );
                 }
@@ -77,7 +77,7 @@ fn connect_interface_select(app_data: Rc<AppData>) {
             if let Err(e) = backend::ensure_agent() {
                 return ErrorDialog::spawn(
                     &app_data.interface_gui.window,
-                    "Failed to start privileged agent",
+                    "启动特权代理失败",
                     &e.to_string(),
                 );
             }
@@ -91,7 +91,7 @@ fn connect_interface_select(app_data: Rc<AppData>) {
 
                         return ErrorDialog::spawn(
                             &app_data.interface_gui.window,
-                            "Failed to set MAC address",
+                            "设置 MAC 地址失败",
                             &e.to_string(),
                         );
                     }
@@ -101,7 +101,7 @@ fn connect_interface_select(app_data: Rc<AppData>) {
                     app_data
                         .app_gui
                         .iface_status_bar
-                        .push(0, &format!("Interface: {iface}"));
+                        .push(0, &format!("网卡：{iface}"));
 
                     app_data.app_gui.restart_but.set_sensitive(true);
                     app_data.app_gui.channel_filter_entry.set_sensitive(true);
@@ -118,7 +118,7 @@ fn connect_interface_select(app_data: Rc<AppData>) {
 
                     ErrorDialog::spawn(
                         &app_data.interface_gui.window,
-                        "Monitor mode failed",
+                        "启用监听模式失败",
                         &e.to_string(),
                     );
                 }

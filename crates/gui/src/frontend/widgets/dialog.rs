@@ -29,7 +29,7 @@ pub struct PanicDialog;
 impl PanicDialog {
     pub fn spawn(parent: &impl IsA<Window>, message: &str) {
         let dialog = MessageDialog::builder()
-            .text("Error")
+            .text("错误")
             .secondary_text(message)
             .decorated(true)
             .message_type(MessageType::Error)
@@ -55,7 +55,7 @@ pub struct UpdateDialog;
 
 impl UpdateDialog {
     pub fn spawn(parent: &impl IsA<Window>, version: &str, new_version: &str) {
-        let title = format!("Update available ({version} -> {new_version})");
+        let title = format!("有可用更新（{version} -> {new_version}）");
         let link = "https://github.com/martin-olivier/airgorah/releases/latest";
 
         let dialog = MessageDialog::builder()
@@ -67,8 +67,8 @@ impl UpdateDialog {
             .transient_for(parent)
             .build();
 
-        dialog.add_button("Close", ResponseType::Close);
-        dialog.add_button("Copy Link", ResponseType::Other(42));
+        dialog.add_button("关闭", ResponseType::Close);
+        dialog.add_button("复制链接", ResponseType::Other(42));
 
         dialog.connect_response(|this, response| {
             if response == ResponseType::Other(42)

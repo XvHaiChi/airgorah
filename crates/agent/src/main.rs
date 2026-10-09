@@ -22,7 +22,7 @@ fn main() {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
 
     if !geteuid().is_root() {
-        eprintln!("airgorah-agent must run as root");
+        eprintln!("airgorah-agent 必须以 root 身份运行");
         std::process::exit(1);
     }
 
@@ -31,12 +31,12 @@ fn main() {
     let sock_path = socket_path(uid, instance);
 
     if let Err(e) = prepare_runtime_dir() {
-        eprintln!("failed to prepare {RUNTIME_DIR}: {e}");
+        eprintln!("无法准备 {RUNTIME_DIR}：{e}");
         std::process::exit(1);
     }
 
     if let Err(e) = prepare_capture_dir() {
-        eprintln!("failed to prepare {}: {e}", globals::CAPTURE_DIR);
+        eprintln!("无法准备 {}：{e}", globals::CAPTURE_DIR);
         std::process::exit(1);
     }
 
@@ -46,13 +46,13 @@ fn main() {
     let listener = match UnixListener::bind(&sock_path) {
         Ok(listener) => listener,
         Err(e) => {
-            eprintln!("failed to bind {sock_path}: {e}");
+            eprintln!("无法绑定 {sock_path}：{e}");
             std::process::exit(1);
         }
     };
 
     if let Err(e) = secure_socket(&sock_path, uid) {
-        eprintln!("failed to secure {sock_path}: {e}");
+        eprintln!("无法保护 {sock_path}：{e}");
         std::fs::remove_file(&sock_path).ok();
         std::process::exit(1);
     }

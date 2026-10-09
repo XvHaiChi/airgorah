@@ -37,8 +37,8 @@ impl AgentClient {
 /// Write a request and read the response on a raw stream.
 fn exchange(stream: &mut UnixStream, request: Request) -> Result<Response, AgentError> {
     write_msg(stream, &request)
-        .map_err(|e| AgentError(format!("failed to send request to agent: {e}")))?;
-    read_msg(stream).map_err(|e| AgentError(format!("lost connection to agent: {e}")))
+        .map_err(|e| AgentError(format!("向代理发送请求失败：{e}")))?;
+    read_msg(stream).map_err(|e| AgentError(format!("与代理的连接中断：{e}")))
 }
 
 lazy_static! {
@@ -50,7 +50,7 @@ fn request(request: Request) -> Result<Response, AgentError> {
     let mut guard = CLIENT.lock().unwrap();
     let client = guard
         .as_mut()
-        .ok_or_else(|| AgentError("the privileged agent is not connected".to_string()))?;
+        .ok_or_else(|| AgentError("特权代理未连接".to_string()))?;
     client.exchange(request)
 }
 
@@ -59,7 +59,7 @@ fn expect_ok(response: Response) -> Result<(), AgentError> {
     match response {
         Response::Ok => Ok(()),
         Response::Error { message } => Err(AgentError(message)),
-        _ => Err(AgentError("unexpected response from agent".to_string())),
+        _ => Err(AgentError("代理返回了意外的响应".to_string())),
     }
 }
 
@@ -75,7 +75,7 @@ fn missing_deps_error<S: AsRef<str>>(missing: &[S]) -> AgentError {
         .map(AsRef::as_ref)
         .collect::<Vec<_>>()
         .join(", ");
-    AgentError(format!("Missing required dependencies: {list}"))
+    AgentError(format!("缺少必需的依赖：{list}"))
 }
 
 /// Startup initialization that needs no privilege: load settings and warn if the
@@ -156,7 +156,7 @@ fn connect_agent(sock: &str, child: &mut Child) -> Result<UnixStream, AgentError
             }
         }
         Response::Error { message } => return Err(AgentError(message)),
-        _ => return Err(AgentError("unexpected response to hello".to_string())),
+        _ => return Err(AgentError("握手（hello）时收到意外的响应".to_string())),
     }
 
     Ok(stream)
@@ -187,7 +187,7 @@ fn spawn_agent() -> Result<Child, AgentError> {
         // Normal case: escalate only the agent, via polkit.
         if !deps::is_installed(deps::PKEXEC) {
             return Err(AgentError(
-                "could not find 'pkexec' to start the privileged agent, install polkit, or run airgorah as root"
+                "找不到 'pkexec' 来启动特权代理，请安装 polkit，或以 root 身份运行 airgorah"
                     .to_string(),
             ));
         }
@@ -199,23 +199,23 @@ fn spawn_agent() -> Result<Child, AgentError> {
 
     command
         .spawn()
-        .map_err(|e| AgentError(format!("failed to launch privileged agent: {e}")))
+        .map_err(|e| AgentError(format!("启动特权代理失败：{e}")))
 }
 
 fn agent_binary_path() -> Result<PathBuf, AgentError> {
     // The agent must live next to the GUI (both the dev build and the package ship
     // them in the same directory).
     let exe = std::env::current_exe()
-        .map_err(|e| AgentError(format!("could not locate the running executable: {e}")))?;
+        .map_err(|e| AgentError(format!("无法定位当前运行的可执行文件：{e}")))?;
 
     let candidate = exe
         .parent()
-        .ok_or_else(|| AgentError("the running executable has no parent directory".to_string()))?
+        .ok_or_else(|| AgentError("当前可执行文件没有上级目录".to_string()))?
         .join("airgorah-agent");
 
     if !candidate.is_file() {
         return Err(AgentError(
-            "could not locate the 'airgorah-agent' binary next to the GUI".to_string(),
+            "在 GUI 同级目录下找不到 'airgorah-agent' 可执行文件".to_string(),
         ));
     }
 
@@ -233,13 +233,13 @@ fn connect_with_timeout(sock: &str, child: &mut Child) -> Result<UnixStream, Age
         // Fail fast if pkexec/the agent already exited (e.g. auth cancelled).
         if let Ok(Some(status)) = child.try_wait() {
             return Err(AgentError(format!(
-                "the privileged agent exited before accepting a connection ({status}), authentication may have been cancelled"
+                "特权代理在接受连接前就退出了（{status}），认证可能已被取消"
             )));
         }
 
         if Instant::now() >= deadline {
             return Err(AgentError(
-                "timed out waiting for the privileged agent".to_string(),
+                "等待特权代理超时".to_string(),
             ));
         }
 
@@ -457,12 +457,12 @@ pub fn save_capture(path: &str) -> Result<(), AgentError> {
                     Some(ref mut file) => file,
                     None => file.insert(
                         std::fs::File::create(path)
-                            .map_err(|e| AgentError(format!("failed to write capture: {e}")))?,
+                            .map_err(|e| AgentError(format!("写入捕获数据失败：{e}")))?,
                     ),
                 };
 
                 file.write_all(&data)
-                    .map_err(|e| AgentError(format!("failed to write capture: {e}")))?;
+                    .map_err(|e| AgentError(format!("写入捕获数据失败：{e}")))?;
                 offset += data.len() as u64;
 
                 if last {
@@ -470,7 +470,7 @@ pub fn save_capture(path: &str) -> Result<(), AgentError> {
                 }
             }
             Response::Error { message } => return Err(AgentError(message)),
-            _ => return Err(AgentError("unexpected response from agent".to_string())),
+            _ => return Err(AgentError("代理返回了意外的响应".to_string())),
         }
     }
 

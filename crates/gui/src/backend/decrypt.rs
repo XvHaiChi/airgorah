@@ -8,7 +8,7 @@ const CRUNCH_SYMBOLS: &str = " @!#$%^&*()-_+=~`[]{}|:;<>,.?/\\";
 
 #[derive(thiserror::Error, Debug)]
 pub enum DecryptError {
-    #[error("Input/Output error: {0}")]
+    #[error("输入/输出错误：{0}")]
     IoError(#[from] std::io::Error),
 }
 
@@ -19,7 +19,7 @@ pub fn run_decrypt_wordlist_process(
     essid: &str,
     wordlist: &str,
 ) -> Result<(), DecryptError> {
-    let title = format!("WPA Decryption ({essid})");
+    let title = format!("WPA 解密（{essid}）");
 
     Command::new("xterm")
         .stdin(Stdio::null())
@@ -73,7 +73,7 @@ pub fn run_decrypt_bruteforce_process(
         }
         BruteforceCharset::Specific(custom) => custom.to_owned(),
     };
-    let title = format!("WPA Decryption ({essid})");
+    let title = format!("WPA 解密（{essid}）");
     let cmd =
         format!("crunch {min} {max} '{charset_str}' | aircrack-ng -w - -b '{bssid}' '{handshake}'");
 
