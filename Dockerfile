@@ -1,5 +1,17 @@
 FROM rust:1.94.1-slim-bookworm
 
+# 将 apt 源切换为国内镜像（清华 TUNA），加速 apt update / install。
+# 同时兼容 Debian 12 的 /etc/apt/sources.list 与 Debian 13+ 的 deb822 格式。
+RUN set -eux; \
+    for f in /etc/apt/sources.list /etc/apt/sources.list.d/debian.sources; do \
+        if [ -f "$f" ]; then \
+            sed -i \
+                -e 's|deb.debian.org|mirrors.tuna.tsinghua.edu.cn|g' \
+                -e 's|security.debian.org|mirrors.tuna.tsinghua.edu.cn|g' \
+                "$f"; \
+        fi; \
+    done
+
 # Fetch package list
 RUN apt update
 
