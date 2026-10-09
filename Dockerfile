@@ -12,21 +12,30 @@ RUN set -eux; \
         fi; \
     done
 
-# Fetch package list
-RUN apt update
+# 安装编译与打包依赖：合并为一层，--no-install-recommends 减少下载量，装完清理 apt 缓存。
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+        build-essential libgtk-4-dev libglib2.0-dev \
+        ruby ruby-dev rubygems rpm zstd libarchive-tools \
+ && rm -rf /var/lib/apt/lists/*
 
-# Install build dependencies
-RUN apt install -y build-essential libgtk-4-dev libglib2.0-dev
+# 通过国内 RubyGems 镜像（清华 TUNA）安装 fpm；--no-document 跳过 ri/rdoc 生成。
+RUN gem sources --add https://mirrors.tuna.tsinghua.edu.cn/rubygems/ \
+ && { gem sources --remove https://rubygems.org/ || true; } \
+ && gem install fpm --no-document
 
-# Install packaging tools
-RUN apt install -y ruby ruby-dev rubygems rpm zstd libarchive-tools
+# 通过国内 rustup 镜像（中科大 USTC）安装组件，两条 component 合并为一条命令。
+ENV RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
+ENV RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
+RUN rustup component add clippy rustfmt
 
-# Install fpm
-RUN gem install fpm
-
-# Install rustup components
-RUN rustup component add clippy
-RUN rustup component add rustfmt
+# 让 cargo 走国内 crates.io 镜像（中科大 USTC：索引与 crate 下载均在境内）。
+RUN printf '%s\n' \
+        '[source.crates-io]' \
+        'replace-with = "ustc"' \
+        '[source.ustc]' \
+        'registry = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"' \
+        > "$CARGO_HOME/config.toml"
 
 ##### Commands #####
 
